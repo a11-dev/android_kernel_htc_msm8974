@@ -247,13 +247,13 @@ static int htc_a11_regulator_deinit(struct platform_device *pdev)
 	return 0;
 }
 
-void htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
+int htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
 {
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 
 	if (pdata == NULL) {
 		pr_err("%s: Invalid input data\n", __func__);
-		return;
+		return -EINVAL;
 	}
 
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
@@ -267,7 +267,7 @@ void htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
 	if (!gpio_is_valid(ctrl_pdata->rst_gpio)) {
 		pr_debug("%s:%d, reset line not configured\n",
 			   __func__, __LINE__);
-		return;
+		return -EINVAL;
 	}
 
 	pr_debug("%s: enable = %d\n", __func__, enable);
@@ -275,7 +275,7 @@ void htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
 	if (enable) {
 		if (pdata->panel_info.first_power_on == 1) {
 			PR_DISP_INFO("reset already on in first time\n");
-			return;
+			return -EINVAL;
 		}
 
 		gpio_set_value((ctrl_pdata->rst_gpio), 1);
@@ -288,6 +288,7 @@ void htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
 		gpio_set_value((ctrl_pdata->rst_gpio), 0);
 	}
 
+	return 0;
 }
 
 static void htc_a11_bkl_en(struct mdss_panel_data *pdata, int enable)

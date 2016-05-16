@@ -3166,6 +3166,12 @@ config MACH_A5
         help
           Support for HTC MSM8226 A5
 
+config MACH_A11
+        depends on ARCH_MSM8226
+        bool "MSM8226 A11"
+        help
+          Support for HTC MSM8226 A11
+
 config MACH_NAME
         string "Macine Name"
         default ""

@@ -9,7 +9,11 @@
 #include <mach/debug_display.h>
 #include "../../../../drivers/video/msm/mdss/mdss_dsi.h"
 
-#define PANEL_ID_KIWI_SHARP_HX      0
+#ifdef CONFIG_HTC_PNPMGR
+extern void set_screen_status(bool onoff);
+#endif
+
+#define PANEL_ID_KIWI_SHARP_HX      	0
 #define PANEL_ID_A5_JDI_NT35521_C3      1
 
 struct dsi_power_data {
@@ -275,7 +279,7 @@ int htc_a11_panel_reset(struct mdss_panel_data *pdata, int enable)
 	if (enable) {
 		if (pdata->panel_info.first_power_on == 1) {
 			PR_DISP_INFO("reset already on in first time\n");
-			return -EINVAL;
+			return 0;
 		}
 
 		gpio_set_value((ctrl_pdata->rst_gpio), 1);
@@ -524,6 +528,9 @@ static int htc_a11_panel_power_on(struct mdss_panel_data *pdata, int enable)
 	}
 	PR_DISP_INFO("%s: en=%d done\n", __func__, enable);
 
+#ifdef CONFIG_HTC_PNPMGR
+	set_screen_status(enable);
+#endif
 	return 0;
 }
 

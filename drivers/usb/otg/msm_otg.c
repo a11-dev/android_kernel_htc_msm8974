@@ -4189,6 +4189,21 @@ static int usb_phy_setting_A5[9] = {
 	0x13,0x83,
 	0xffffffff
 };
+#elif defined(CONFIG_MACH_A11)
+static int usb_phy_setting_A11UL[9] = {
+	0x44,0x80,
+	0x39,0x81,
+	0x3c,0x82,
+	0x13,0x83,
+	0xffffffff
+};
+static int usb_phy_setting_A11UL_PVT[9] = {
+	0x44,0x80,
+	0x3b,0x81,
+	0x3c,0x82,
+	0x13,0x83,
+	0xffffffff
+};
 #endif
 
 int *htc_msm_otg_get_phy_init(int *phy_init)
@@ -4199,6 +4214,11 @@ int *htc_msm_otg_get_phy_init(int *phy_init)
 	return usb_phy_setting_MEMUL;
 #elif defined(CONFIG_MACH_A5)
 	return usb_phy_setting_A5;
+#elif defined(CONFIG_MACH_A11)
+	if (of_machine_pcbid() == 0x80)
+		return usb_phy_setting_A11UL_PVT;
+	else
+		return usb_phy_setting_A11UL;
 #endif
 	printk("[USB] use dt phy init\n");
 	return phy_init;

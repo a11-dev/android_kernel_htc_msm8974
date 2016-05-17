@@ -560,6 +560,8 @@ static const char *htc_8226_dt_match[] __initconst = {
 	"htc,a5dwgl",
 	"htc,a5tl",
 	"htc,a5dugl",
+	"htc,a11chl",
+	"htc,a11ul",
 	NULL
 };
 
